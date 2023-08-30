@@ -7,10 +7,7 @@ import LeftSidebar from "@/components/Admin/LeftSidebar/LeftSidebar"
 
 import "../../styles/admin-style.css"
 
-export const metadata = {
-  title: 'bizdir',
-  
-};
+
 export default function DashboardLayout({ children }) {
   const [showadMenu,setShowAdMenu] = useState(true);
 function toggleCart() {
