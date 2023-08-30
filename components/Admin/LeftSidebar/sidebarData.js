@@ -406,7 +406,7 @@ export const SidebarData = [
         ]
       },
       {
-        title:"Import &amp; Export",
+        title:"Import & Export",
         path:"#",
         class:"ic-imp",
         subNav:[

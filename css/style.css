@@ -6171,7 +6171,7 @@ background: #F44336;
 .login-reg:before{
     content: '';
     position: absolute;
-   
+    background:rgba(33, 48, 59, 0.73);
     top: 0px;
     bottom: 0px;
     left: 0px;
@@ -6221,7 +6221,7 @@ background: #F44336;
 }
 .log div button.btn{
     width: 100%;
-    background: #51c0ff;
+    background: var(--blue);
     border: 0px;
     font-weight: 600;
     font-size: 17px;
@@ -6290,9 +6290,7 @@ background: #F44336;
 }
 .ud-cen .rat{
 }
-.log-2, .log-3{
-    display:none;
-}
+
 .login-main.add-list{
     width:60%;
 }
@@ -6591,7 +6589,7 @@ background: #F44336;
     display:none;
 }
 .db-open .bl{
-    display:none;
+    display:block;
 }
 .db-open .al{
     display:block;

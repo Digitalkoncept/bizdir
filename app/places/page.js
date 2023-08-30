@@ -1,8 +1,8 @@
 'use client'
 import React from 'react'
-import Headertwo from '../../component/Headertwo';
-import BottomMenu from '../../component/BottomMenu';
-import Footer from '../../component/Footer';
+import Headertwo from '@/components/Headertwo';
+import BottomMenu from '@/components/BottomMenu';
+import Footer from '@/components/Footer';
 import "../../css/style4.css"
 import {BiSearch} from "react-icons/bi"
 const page = () => {

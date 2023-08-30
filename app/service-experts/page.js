@@ -3,9 +3,9 @@ import React from 'react'
 import "../../css/style4.css";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
-import Headertwo from '../../component/Headertwo';
-import BottomMenu from '../../component/BottomMenu';
-import Footer from '../../component/Footer';
+import Headertwo from '@/components/Headertwo';
+import BottomMenu from '@/components/BottomMenu';
+import Footer from '@/components/Footer';
 import Slider from 'react-slick';
 const page = () => {
   const settings = {

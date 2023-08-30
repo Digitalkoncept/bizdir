@@ -1,7 +1,7 @@
 'use strict';
 'use client';
 import React from 'react';
-import Script from 'next/script';
+import useAuth from 'context/useAuth';
 import { useScrollPosition } from '../hooks';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -11,11 +11,12 @@ const Header = () => {
   const [ isMobMenuVisible, setMobMenuVisibility ] = useState(false);
   const [isDashboardVisible, setDashboardVisiblity] = useState(false);
   const scrollPosition = useScrollPosition();
+  const {authStatus} = useAuth();
 
   return (
     <>
     
-    <div className="hom-top dmact">
+    <div className="hom-top ">
   <div className="container">
     <div className="row">
       <div className="hom-nav  db-open ">
@@ -277,7 +278,8 @@ const Header = () => {
             </ul>
           </form>
         </div>
-        <div className="al duration-500" onMouseEnter={() => setDashboardVisiblity(true)}  onMouseLeave={() => setDashboardVisiblity(false)} >
+        {authStatus ? (
+          <div className="al duration-500" onMouseEnter={() => setDashboardVisiblity(true)}  onMouseLeave={() => setDashboardVisiblity(false)} >
           <div className="head-pro">
             <img src="https://ik.imagekit.io/rrw4vjgxohv/bizbook/62736rn53themes.png?ik-sdk-version=javascript-1.4.3&updatedAt=1672921816064" alt="" />
             <b>Profile by</b>
@@ -344,6 +346,17 @@ const Header = () => {
             </ul>
           </div>
         </div>
+        ):(
+          <ul class="bl">
+          <li><a href="pricing-details.html.html">Add business</a>
+          </li>
+          <li><Link href="login?login=login">Sign in</Link>
+          </li>
+          <li><Link href="login?login=signup">Create an account</Link>
+          </li>
+        </ul>
+        )}
+        
         {/*MOBILE MENU*/}
         <div className="mob-menu ">
           <div className="mob-me-ic">
@@ -558,33 +571,7 @@ const Header = () => {
     </div>
   </div>
     </div>
-    <style jsx>
-  {`
-  .hom-top {
-    transition: all 0.5s ease;
-    background: none;
-    box-shadow: none;
-}
-
-.top-ser {
-    display: none;
-}
-
-.dmact .top-ser {
-    display: block;
-}
-
-.caro-home {
-    margin-top: 90px;
-    float: left;
-    width: 100%;
-}
-
-.carousel-item:before {
-    background: none;
-}
-  `}
-</style>
+   
     </>
   )
 }
