@@ -1,7 +1,7 @@
 import React from 'react'
 import CategoryIcon from '@mui/icons-material/Category';
 import SubMenu from './SubMenu';
-import { SidebarData } from './SidebarData';
+import { SidebarData } from '@/components/Admin/LeftSidebar/SidebarData';
 const LeftSidebar = ({showadMenu}) => {
   return (
     <section>
