@@ -1071,7 +1071,6 @@ div#event_detail_enq_success p{
 }
 .al{
     float:right;
-    display:none;
     position: relative;
 }
 .al:after{
@@ -6588,12 +6587,12 @@ background: #F44336;
 .ud-enqu .ud-rhs{
     display:none;
 }
-.db-open .bl{
+/* .db-open .bl{
     display:block;
 }
 .db-open .al{
     display:block;
-}
+} */
 .db-menu{
     position: absolute;
     background: #fff;
@@ -13785,9 +13784,7 @@ color: #333;
     .pglist-off-last .home-list-pop .col-md-3{
         padding-right:0px;
     }
-    .db-open .al{
-        display:none;
-    }
+    
     .ud-cen-s3 ul li{
         width:50%;
     }

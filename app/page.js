@@ -2,9 +2,13 @@
 import React from 'react'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import {  toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Slider from "react-slick";
+import {account} from "@/appwrite/appwrite"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer';
+import { useRouter,useSearchParams } from 'next/navigation';
 import BottomMenu from '@/components/BottomMenu';
 import Link from 'next/link'
 import { useState, useEffect } from 'react';
@@ -12,7 +16,8 @@ import { useState, useEffect } from 'react';
 const page = () => {
   const [location, setLocation] = useState({});
   const [loading, setLoading] = useState(true);
-
+  
+  const router = useRouter();
 
   var settings = {
     infinite: true,
@@ -49,6 +54,10 @@ const page = () => {
   ]
   };
   
+  const searchParams = useSearchParams()
+  const userId = searchParams.get("userId");
+  const secret = searchParams.get("secret");
+  console.log("search params value",userId,secret);
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -72,8 +81,23 @@ const page = () => {
       });
       setLoading(false);
     }
-  }, []);
+    if (typeof window !== 'undefined' && userId) {
+      const promise = account.updateVerification(userId, secret);
+      promise
+        .then(function(response) {
+          toast.success("User is verified!");
+          console.log("Mail confirmed successfully");
+        })
+        .catch(function(error) {
+          toast.error("Verification failed");
+          console.log("There is an error", error);
+        });
+    }
+  }, [userId, secret]);
   
+  // const urlParams = new URLSearchParams(window.location.search);
+ 
+
   
   return (
     <>
@@ -1725,6 +1749,7 @@ const page = () => {
       </div>
     </div>
   </section>
+    
   {/* END */}
  <Footer/>
   {/* START */}

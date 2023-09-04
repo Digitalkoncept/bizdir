@@ -5,7 +5,9 @@
         "@/components/*": ["components/*"],
         "@/public/*": ["public/*"],
         "@/styles/*": ["styles/*"],
-        "@/css/*": ["css/*"]
+        "@/css/*": ["css/*"],
+        "@/appwrite/*": ["appwrite/*"],
+        "@/context/*": ["context/*"]
       }
     }
   }

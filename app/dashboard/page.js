@@ -3,9 +3,17 @@ import React from 'react'
 import Headertwo from '@/components/Headertwo'
 import Footer from '@/components/Footer';
 import BottomMenu from '@/components/BottomMenu';
+import { useRouter } from 'next/navigation'
 import Link from 'next/link';
+import useAuth from '@/context/useAuth';
 
 const page = () => {
+  const router = useRouter();
+  const {setAuthStatus,authStatus} = useAuth();
+  if (!authStatus) {
+    router.replace("/login");
+    return <></>;
+  }
   return (
     <div>
         <section>

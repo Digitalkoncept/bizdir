@@ -3,9 +3,11 @@
 import React from 'react';
 import useAuth from 'context/useAuth';
 import { useScrollPosition } from '../hooks';
+import { account } from '@/appwrite/appwrite';
 import Link from 'next/link';
 import { useState } from 'react';
 import $ from "jquery";
+import LogoutButton from './LogoutButton';
 const Header = () => {
   const [ isMenuVisible, setMenuVisibility ] = useState(false);
   const [ isMobMenuVisible, setMobMenuVisibility ] = useState(false);
@@ -338,10 +340,7 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/#">
-                  <img src="/icon/dbl12.png" alt="" />
-                  Log Out
-                </Link>
+                <LogoutButton/>
               </li>
             </ul>
           </div>

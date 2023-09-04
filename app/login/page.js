@@ -4,6 +4,7 @@ import useAuth from 'context/useAuth'
 import { appwriteService } from '../../appwrite/appwrite'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Headertwo from "@/components/Headertwo"
+import {  toast } from "react-toastify";
 import Footer from '@/components/Footer'
 const page = () => {
   const router = useRouter()
@@ -16,6 +17,8 @@ const [loginForm, setLoginForm] = useState({
   email: "",
   password: "",
 })
+const [userEmail, setuserEmail] = useState("");
+console.log(userEmail)
     const [error, setError] = useState("")
     const {setAuthStatus,authStatus} = useAuth();
   const searchParams = useSearchParams()
@@ -55,6 +58,18 @@ const [loginForm, setLoginForm] = useState({
         setError(error.message)
     }
 }
+
+const forgetPassword = async (e) => {
+  e.preventDefault();
+  if (userEmail && userEmail.includes('@')) {
+   const req = await appwriteService.forgotPassword(userEmail)
+   if(req){
+    toast.success(`Email has been sent!`);
+   }
+  } else {
+    toast.error(`Please enter your email!`);
+  }
+};
 if (authStatus) {
   router.replace("/dashboard");
   return <></>;
@@ -204,13 +219,19 @@ if (authStatus) {
            <h4>Forgot password</h4>
            <form id="forget_form" name="forget_form" method="post" action="forgot_process.html">
              <div className="form-group">
-               <input type="email" autoComplete="off" name="email_id" id="email_id" className="form-control" placeholder="Enter email*" pattern="^[\w]{1,}[\w.+-]{0,}@[\w-]{2,}([.][a-zA-Z]{2,}|[.][\w-]{2,}[.][a-zA-Z]{2,})$" title="Invalid email address" required />
+               <input type="email" name="email" autoComplete="off"
+                onChange={(e) => {
+                  setuserEmail(e.target.value);
+                }}
+                id="email_id" className="form-control"
+                 placeholder="Enter email*" pattern="^[\w]{1,}[\w.+-]{0,}@[\w-]{2,}([.][a-zA-Z]{2,}|[.][\w-]{2,}[.][a-zA-Z]{2,})$" title="Invalid email address" required />
              </div>
-             <button type="submit" name="forgot_submit" className="btn btn-primary">Submit</button>
+             <button type="submit" name="forgot_submit"  onClick={(e) => forgetPassword(e)} className="btn btn-primary">Submit</button>
            </form>
          </div>
        </div>
        )}
+       
        
         <div className="log-bot">
           <ul>
