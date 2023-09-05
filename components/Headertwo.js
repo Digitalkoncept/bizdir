@@ -1,7 +1,7 @@
 'use strict';
 'use client';
-import React from 'react';
-import useAuth from 'context/useAuth';
+import React, { useContext } from 'react';
+import userContext, { UserContext } from 'context/UserContext';
 import { useScrollPosition } from '../hooks';
 import { account } from '@/appwrite/appwrite';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ const Header = () => {
   const [ isMobMenuVisible, setMobMenuVisibility ] = useState(false);
   const [isDashboardVisible, setDashboardVisiblity] = useState(false);
   const scrollPosition = useScrollPosition();
-  const {authStatus} = useAuth();
+  const {authStatus} = useContext(UserContext);
 
   return (
     <>

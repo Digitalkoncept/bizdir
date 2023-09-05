@@ -72,7 +72,15 @@ const client = new Client();
             throw error
         }
     }
-  
+       async getUser(){
+        try {
+            const data = await account.get();
+            console.log("userdata",data);
+            return data;
+          } catch (error) {
+            console.log(error);
+          }
+    }
       
   }
   

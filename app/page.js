@@ -115,7 +115,7 @@ const page = () => {
           <br />
           Service Experts
         </b>{" "}
-        Restaurants, cafe&apos;s, and bars in {location.city}, {location.country}{" "}
+        Restaurants, cafe&apos;s, and bars in {location?.city}, {location?.country}{" "}
       </h1>
     </div>
     <div className="ban-search">

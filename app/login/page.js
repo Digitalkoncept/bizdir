@@ -1,6 +1,8 @@
 'use client'
-import React,{useState} from 'react'
-import useAuth from 'context/useAuth'
+import React,{useState,useContext} from 'react'
+import UserContext from 'context/UserContext'
+import Link from 'next/link'
+import {account} from "@/appwrite/appwrite"
 import { appwriteService } from '../../appwrite/appwrite'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Headertwo from "@/components/Headertwo"
@@ -20,7 +22,7 @@ const [loginForm, setLoginForm] = useState({
 const [userEmail, setuserEmail] = useState("");
 console.log(userEmail)
     const [error, setError] = useState("")
-    const {setAuthStatus,authStatus} = useAuth();
+    const {setAuthStatus,authStatus} = useContext(UserContext);
   const searchParams = useSearchParams()
     const login = searchParams.get('login')
     console.log("auth status is ",authStatus)
@@ -59,6 +61,19 @@ console.log(userEmail)
     }
 }
 
+const googleAuth = (e) => {
+  e.preventDefault();
+
+  try {
+    account.createOAuth2Session(
+      "google",
+      "http://localhost:3000/",
+      "http://localhost:3000/login"
+    );
+  } catch (e) {
+    toast.error(`${e.message}`);
+  }
+};
 const forgetPassword = async (e) => {
   e.preventDefault();
   if (userEmail && userEmail.includes('@')) {
@@ -120,19 +135,20 @@ if (authStatus) {
             </form>
             {/* SOCIAL MEDIA LOGIN */}
             <div className="soc-log">
-              <ul>
+             <ul>
                 <li>
-                  <div className="g-signin2" data-onsuccess="onSignIn" />
-                </li>
-                {/*                                <li>*/}
-                {/*                                    <a href="google_login.html" class="login-goog"><img src="images/icon/seo.png">Continue*/}
-                {/*                                        with Google</a>*/}
-                {/*                                </li>*/}
+                  <div classname="g-signin2" data-onsuccess="onSignIn">
+                  </div></li>
                 <li>
-                  <a href="javascript:void(0);" onclick="fbLogin();" className="login-fb">
-                    <img src="images/icon/facebook.png" />Continue with Facebook</a>
+                  <Link href="javascript:void(0);"  onClick={(e) => googleAuth(e)} className="login-goog"><img src="images/icon/seo.png" />Continue
+                    with Google</Link>
+                </li> 
+                <li>
+                  <Link href="javascript:void(0);" onclick="fbLogin();" classname="login-fb">
+                    <img src="images/icon/facebook.png" />Continue with Facebook</Link>
                 </li>
               </ul>
+
             </div>
             {/* END SOCIAL MEDIA LOGIN */}
           </div>

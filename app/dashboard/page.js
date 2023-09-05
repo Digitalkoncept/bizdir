@@ -1,15 +1,15 @@
 'use client';
-import React from 'react'
+import React,{useContext} from 'react'
 import Headertwo from '@/components/Headertwo'
 import Footer from '@/components/Footer';
 import BottomMenu from '@/components/BottomMenu';
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
-import useAuth from '@/context/useAuth';
+import UserContext from '@/context/UserContext';
 
 const page = () => {
   const router = useRouter();
-  const {setAuthStatus,authStatus} = useAuth();
+  const {setAuthStatus,authStatus} = useContext(userContext);
   if (!authStatus) {
     router.replace("/login");
     return <></>;

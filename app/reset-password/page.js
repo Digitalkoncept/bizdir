@@ -1,6 +1,6 @@
 'use client'
-import React,{useState} from 'react'
-import useAuth from 'context/useAuth'
+import React,{useState,useContext} from 'react'
+import UserContext from 'context/UserContext'
 import {account} from "@/appwrite/appwrite"
 import { appwriteService } from '../../appwrite/appwrite'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
@@ -9,7 +9,7 @@ import {  toast } from "react-toastify";
 import Footer from '@/components/Footer'
 const page = () => {
     const router = useRouter()
-    const {setAuthStatus,authStatus} = useAuth();
+    const {setAuthStatus,authStatus} = useContext(UserContext);
     const searchParams = useSearchParams()
     const [password, setpassword] = useState({
       newPassword: "",
@@ -21,19 +21,19 @@ const page = () => {
       const secret = searchParams.get("secret");
   
       if (password.newPassword === password.repeatedPassword){
-      const promise =   await account.updateRecovery(
-          userId,
-          secret,
-          password.newPassword,
-          password.repeatedPassword
-        );
-        promise
-        .then(function(response) {
-          toast.success("Password Update Successfully");
-        })
-        .catch(function(error) {
-          toast.error(`${error.messsage}`);
-        });
+        try{
+          const response =   await account.updateRecovery(
+              userId,
+              secret,
+              password.newPassword,
+              password.repeatedPassword
+            );
+            toast.success("password Update Successfully");
+            router.push("/login");
+        } catch (error){
+          toast.error(error.message);
+        }
+       
       } else {
         toast.error('Both new password and the repeated password should be same');
       }

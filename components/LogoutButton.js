@@ -1,12 +1,12 @@
-import React from 'react'
-import useAuth from '@/context/useAuth';
+import React,{useContext} from 'react'
+import UserContext from '@/context/UserContext';
 import { appwriteService } from '@/appwrite/appwrite'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'
 import { useState } from 'react';
 const LogoutButton = () => {
     const router = useRouter()
-    const {setAuthStatus,authStatus} = useAuth();
+    const {setAuthStatus,authStatus} = useContext(UserContext);
     const handleLogout = async (e) =>{
         e.preventDefault()
         try {

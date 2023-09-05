@@ -1,13 +1,13 @@
 'use strict';
 'use client';
-import React from 'react';
+import React,{useContext} from 'react';
 import Script from 'next/script';
 import { useScrollPosition } from '../hooks';
+import AuthContext from '@/context/authContext';
 import Link from 'next/link';
-import useAuth from "@/context/useAuth";
-import { appwriteService } from '@/appwrite/appwrite'
+import UserContext from "@/context/UserContext";
 import { useRouter } from 'next/navigation'
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import $ from "jquery";
 import LogoutButton from './LogoutButton';
 const Header = () => {
@@ -16,9 +16,21 @@ const Header = () => {
   const [isMobMenuVisible, setMobMenuVisibility] = useState(false);
   const [isDashboardVisible, setDashboardVisiblity] = useState(false);
   const scrollPosition = useScrollPosition();
-  const { authStatus,setAuthStatus } = useAuth();
+  const { authStatus,setAuthStatus } = useContext(UserContext);
+  const [userDetails, setUserDetails] = useState();
+  const {UserData} = useContext(AuthContext);
  console.log(authStatus)
- 
+
+ const getUserData = async () => {
+  const data = await UserData();
+  // Do something with the userData
+  setUserDetails(data);
+  console.log(data);
+};
+
+useEffect(() => {
+  getUserData();
+}, []);
 
   return (
     <>
