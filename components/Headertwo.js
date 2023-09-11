@@ -1,19 +1,18 @@
 'use strict';
 'use client';
 import React, { useContext } from 'react';
-import userContext, { UserContext } from 'context/UserContext';
+import useAuth from '@/context/useAuth';
 import { useScrollPosition } from '../hooks';
 import { account } from '@/appwrite/appwrite';
 import Link from 'next/link';
 import { useState } from 'react';
-import $ from "jquery";
 import LogoutButton from './LogoutButton';
 const Header = () => {
   const [ isMenuVisible, setMenuVisibility ] = useState(false);
   const [ isMobMenuVisible, setMobMenuVisibility ] = useState(false);
   const [isDashboardVisible, setDashboardVisiblity] = useState(false);
   const scrollPosition = useScrollPosition();
-  const {authStatus} = useContext(UserContext);
+  const {authStatus} = useAuth();
 
   return (
     <>

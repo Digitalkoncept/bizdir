@@ -1,15 +1,15 @@
 'use client';
-import React,{useContext} from 'react'
+import React from 'react'
 import Headertwo from '@/components/Headertwo'
 import Footer from '@/components/Footer';
 import BottomMenu from '@/components/BottomMenu';
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
-import UserContext from '@/context/UserContext';
+import useAuth from '@/context/useAuth';
 
 const page = () => {
   const router = useRouter();
-  const {setAuthStatus,authStatus} = useContext(userContext);
+  const {setAuthStatus,authStatus} = useAuth();
   if (!authStatus) {
     router.replace("/login");
     return <></>;
@@ -42,6 +42,12 @@ const page = () => {
               <Link href="/dashboard" className="db-lact">
                 <img src="/icon/dbl1.png" alt="theme" />
                 My Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link href="/dashboard/wallet" className="">
+              <img src="/icon/dbl9.png" alt="theme" />
+                My Wallet
               </Link>
             </li>
             <li>

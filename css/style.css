@@ -9950,17 +9950,19 @@ div#pop_enq_success p{color: #106e43;margin:0px;}
     width: 22px;
     padding-right: 5px;
 }
-.soc-log ul li a.login-goog{
+.soc-log ul li a{
     margin-bottom: 10px;
     color: #4f7083;
     background: #fff;
     border: 1px solid #ccc;
 }
-.soc-log ul li a.login-fb{
-    color: #666;
+.soc-log ul li a.login-micro{
+    margin-bottom: 10px;
+    color: #4f7083;
     background: #fff;
-    border: 1px solid #dadada;
+    border: 1px solid #ccc;
 }
+
 
 /*--========================================--*/
 .filt-alist-near{}
@@ -11923,7 +11925,7 @@ div#pop_enq_success p{color: #106e43;margin:0px;}
     padding: 15px;
     border: 2px dashed #ededf1e0;
     transition: all 0.5s ease;
-    height: 195px;
+    height: 235px;
     position: relative;overflow: hidden;
 }
 .coup-box-1{
@@ -11966,7 +11968,7 @@ div#pop_enq_success p{color: #106e43;margin:0px;}
     font-weight: 700;
     padding: 10px 5px 5px 5px;
     line-height: 20px;
-    height: 55px;
+    height: 40px;
     overflow: hidden;
 }
 .coup-box-1 .s2{
@@ -11978,16 +11980,16 @@ div#pop_enq_success p{color: #106e43;margin:0px;}
     width: 60%;
 }
 .coup-box-1 .s2 .lhs span{
-    font-size: 11px;
-    font-weight: 500;
-    color: #474858;
+    font-size: 16px;
+    font-weight: 400;
+    color: #2C3E50;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 .coup-box-1 .s2 .lhs h6{
-    color: #000;
+    color: #2C3E50;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 18px;
     margin-bottom: 5px;
     line-height: 20px;
 }

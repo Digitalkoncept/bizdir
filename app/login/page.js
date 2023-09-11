@@ -1,9 +1,9 @@
 'use client'
 import React,{useState,useContext} from 'react'
-import UserContext from 'context/UserContext'
+import useAuth from '@/context/useAuth'
 import Link from 'next/link'
 import {account} from "@/appwrite/appwrite"
-import { appwriteService } from '../../appwrite/appwrite'
+import  appwriteService  from '@/appwrite/appwrite'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Headertwo from "@/components/Headertwo"
 import {  toast } from "react-toastify";
@@ -22,7 +22,7 @@ const [loginForm, setLoginForm] = useState({
 const [userEmail, setuserEmail] = useState("");
 console.log(userEmail)
     const [error, setError] = useState("")
-    const {setAuthStatus,authStatus} = useContext(UserContext);
+    const {setAuthStatus,authStatus} = useAuth();
   const searchParams = useSearchParams()
     const login = searchParams.get('login')
     console.log("auth status is ",authStatus)
@@ -74,6 +74,19 @@ const googleAuth = (e) => {
     toast.error(`${e.message}`);
   }
 };
+const microsoftAuth = (e) => {
+  e.preventDefault();
+
+  try {
+    account.createOAuth2Session(
+      "microsoft",
+      "http://localhost:3000/",
+      "http://localhost:3000/login"
+    );
+  } catch (e) {
+    toast.error(`${e.message}`);
+  }
+};
 const forgetPassword = async (e) => {
   e.preventDefault();
   if (userEmail && userEmail.includes('@')) {
@@ -85,6 +98,7 @@ const forgetPassword = async (e) => {
     toast.error(`Please enter your email!`);
   }
 };
+
 if (authStatus) {
   router.replace("/dashboard");
   return <></>;
@@ -140,15 +154,14 @@ if (authStatus) {
                   <div classname="g-signin2" data-onsuccess="onSignIn">
                   </div></li>
                 <li>
-                  <Link href="javascript:void(0);"  onClick={(e) => googleAuth(e)} className="login-goog"><img src="images/icon/seo.png" />Continue
+                  <Link href="javascript:void(0);"  onClick={(e) => googleAuth(e)} className="login-goog"><img src="/images/icon/seo.png" />Continue
                     with Google</Link>
                 </li> 
                 <li>
-                  <Link href="javascript:void(0);" onclick="fbLogin();" classname="login-fb">
-                    <img src="images/icon/facebook.png" />Continue with Facebook</Link>
+                  <Link href="javascript:void(0);" onClick={(e) =>microsoftAuth(e)} classname="login-micro">
+                    <img src="/icon/microsoft.svg" />Continue with Microsoft</Link>
                 </li>
               </ul>
-
             </div>
             {/* END SOCIAL MEDIA LOGIN */}
           </div>

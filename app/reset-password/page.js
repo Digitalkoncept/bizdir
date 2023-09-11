@@ -1,15 +1,15 @@
 'use client'
 import React,{useState,useContext} from 'react'
-import UserContext from 'context/UserContext'
+import useAuth from '@/context/useAuth'
 import {account} from "@/appwrite/appwrite"
-import { appwriteService } from '../../appwrite/appwrite'
+import appwriteService from '@/appwrite/appwrite'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Headertwo from "@/components/Headertwo"
 import {  toast } from "react-toastify";
 import Footer from '@/components/Footer'
 const page = () => {
     const router = useRouter()
-    const {setAuthStatus,authStatus} = useContext(UserContext);
+    const {setAuthStatus,authStatus} = useAuth();
     const searchParams = useSearchParams()
     const [password, setpassword] = useState({
       newPassword: "",

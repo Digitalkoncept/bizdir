@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Slider from "react-slick";
-import {account} from "@/appwrite/appwrite"
+import {account,databases} from "@/appwrite/appwrite"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer';
 import { useRouter,useSearchParams } from 'next/navigation';
@@ -87,6 +87,10 @@ const page = () => {
         .then(function(response) {
           toast.success("User is verified!");
           console.log("Mail confirmed successfully");
+          const update = databases.updateDocument('64faed31a7aff8087750', '64fc60052476f26d9afc', userId,{
+            emailVerification:true,
+          });
+          console.log(update);
         })
         .catch(function(error) {
           toast.error("Verification failed");

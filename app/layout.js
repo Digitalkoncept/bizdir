@@ -2,25 +2,21 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import "@/styles/globals.css";
-import { appwriteService } from "@/appwrite/appwrite";
+import  appwriteService  from "@/appwrite/appwrite";
 import {account} from "@/appwrite/appwrite"
 import { AuthProvider } from "@/context/authContext";
-import { UserProvider } from '@/context/UserContext'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "@/css/style.css";
 import "@/css/bootstrap.css";
 import "@/css/style2.css"
-// import "../styles/admin-style.css"
 
 
-import Script from "next/script";
 
 
 export default function RootLayout({ children }) {
-  const [authStatus, setAuthStatus] = useState(false);
   const [loader, setLoader] = useState(true);
-  
+  const [authStatus,setAuthStatus] = useState(false);
   
 
   useEffect(() => {
@@ -29,8 +25,7 @@ export default function RootLayout({ children }) {
     .finally(() => setLoader(false));
 }, []);
 
-  return ( <UserProvider value={{ authStatus, setAuthStatus }}>
-    
+  return ( <AuthProvider value={{ authStatus, setAuthStatus }}>
     <html>
       <body> 
         <div>
@@ -49,6 +44,6 @@ export default function RootLayout({ children }) {
       </div>
         </body>
     </html>
-    </UserProvider>
+    </AuthProvider>
   );
 }

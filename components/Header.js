@@ -1,14 +1,12 @@
 'use strict';
 'use client';
-import React,{useContext} from 'react';
-import Script from 'next/script';
+import React from 'react';
 import { useScrollPosition } from '../hooks';
-import AuthContext from '@/context/authContext';
 import Link from 'next/link';
-import UserContext from "@/context/UserContext";
+import  appwriteService  from '@/appwrite/appwrite';
+import useAuth from '@/context/useAuth';
 import { useRouter } from 'next/navigation'
 import { useState,useEffect } from 'react';
-import $ from "jquery";
 import LogoutButton from './LogoutButton';
 const Header = () => {
   const router = useRouter()
@@ -16,25 +14,23 @@ const Header = () => {
   const [isMobMenuVisible, setMobMenuVisibility] = useState(false);
   const [isDashboardVisible, setDashboardVisiblity] = useState(false);
   const scrollPosition = useScrollPosition();
-  const { authStatus,setAuthStatus } = useContext(UserContext);
-  const [userDetails, setUserDetails] = useState();
-  const {UserData} = useContext(AuthContext);
+  const {authStatus,setAuthStatus } = useAuth();
+  const [user, setUser] = useState(null);
  console.log(authStatus)
 
- const getUserData = async () => {
-  const data = await UserData();
-  // Do something with the userData
-  setUserDetails(data);
-  console.log(data);
-};
-
-useEffect(() => {
-  getUserData();
-}, []);
+ useEffect(() => {
+  if(authStatus){
+  (async () => {
+      const userData = await appwriteService.getCurrentUser()
+      if (userData) {
+          setUser(userData)
+      }
+  })()
+}}, [])
+;
 
   return (
     <>
-
       <div className={`${scrollPosition > 0 ? 'hom-top dmact' : 'hom-top'}`}>
         <div className="container">
           <div className="row">
@@ -303,7 +299,7 @@ useEffect(() => {
                    <img src="/icon/main-logo.png" height={36} width={36} alt="" />
                    <b>Profile by</b>
                    <br />
-                   <h4>Digital Koncept</h4>
+                   <h4>{user?.name}</h4>
                    <Link href="/dashboard" className="fclick" />
                  </div>
                  <div className='db-menu duration-500' style={{ display: `${isDashboardVisible ? 'block' : 'none'}`, transition: '0.3s' }} >
@@ -384,7 +380,7 @@ useEffect(() => {
                   </div>
                   <div className="mv-pro ud-lhs-s1">
                     <img src="/user/62736rn53themes.png" alt="" />
-                    <h4>Digital koncept</h4>
+                    <h4>{user?.name}</h4>
                     <b>Join on 26, Mar 2021</b>
                   </div>
                   <div className="mv-pro-menu ud-lhs-s2">
