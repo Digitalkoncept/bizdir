@@ -3,7 +3,6 @@
 import React, { useContext } from 'react';
 import useAuth from '@/context/useAuth';
 import { useScrollPosition } from '../hooks';
-import { account } from '@/appwrite/appwrite';
 import Link from 'next/link';
 import { useState } from 'react';
 import LogoutButton from './LogoutButton';

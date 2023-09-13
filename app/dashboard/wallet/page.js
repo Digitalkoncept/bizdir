@@ -1,32 +1,51 @@
 'use client';
-import React, { useState } from 'react'
+import React, { useState,useEffect, } from 'react'
+import {v4 as uuidv4} from 'uuid'
 import Headertwo from '@/components/Headertwo'
-import {account,databases} from "@/appwrite/appwrite"
-import { ID,Date,uuidv4 } from 'appwrite';
+import appwriteService,{account,databases} from "@/appwrite/appwrite"
+import {toast} from 'react-toastify'
+import { ID } from 'appwrite';
 import Footer from '@/components/Footer';
 import BottomMenu from '@/components/BottomMenu';
 import Link from 'next/link';
-import {BsWallet2} from 'react-icons/bs' 
+import {BsWallet2} from 'react-icons/bs'
 
 const page = () => {
   const [showModal,setShowModal] = useState(false);
   const [amount, setAmount] = useState(200);
+  const [user,setUser] = useState(null);
   console.log(amount);
+  useEffect(() => {
+    (async () => {
+        const userData = await appwriteService.getCurrentUser()
+        if (userData) {
+            setUser(userData)
+        }
+    })()
+  }, [])
   const openModal = () => {
     setShowModal(!showModal);
   };
 console.log(databases);
 const addRequest = async (e) => {
   e.preventDefault();
-
+  const now = new Date();
+  const transactionid = uuidv4();
     const res = await databases.createDocument('64faed31a7aff8087750','64faed592ffde69dcab8',ID.unique(), {
-     user_id:ID.unique(),
+     user_id:user.$id,
      balance:amount,
-     status:'pending'
+     status:'pending',
+     transaction_id:transactionid,
+     user_name:user.name,
+     request_time:now.toISOString(),
     });
+    toast.success("request submited successfully")
+    setShowModal(false);
     console.log(res);
 
 };
+
+console.log(user)
   return (
     <div>
       <section>
@@ -209,7 +228,7 @@ const addRequest = async (e) => {
                               <img src="/user/1.png" alt='demoimage'/>
                             </div> */}
                             <div className="rhs">
-                              <h4>Digital Koncept</h4>
+                              <h4>{user?.name}</h4>
                             </div>
                               <BsWallet2 className='my-2 text-orange-400 text-xl'/>
                           </div>
@@ -1309,7 +1328,7 @@ const addRequest = async (e) => {
             </div>
             
             <div className="mt-6">
-              <button onClick={(e) =>addRequest(e)} className="w-full cursor-pointer rounded-[4px] bg-green-700 px-3 py-[6px] text-center font-semibold text-white">{amount}₹</button>
+              <button onClick={(e) =>addRequest(e)} className="w-full cursor-pointer rounded-[4px] bg-green-700 px-3 py-[6px] text-center font-semibold text-white">{amount}₹ submit</button>
             </div>
           </div>
         </div>

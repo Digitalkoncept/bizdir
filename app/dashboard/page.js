@@ -1,5 +1,5 @@
 'use client';
-import React from 'react'
+import React,{useEffect} from 'react'
 import Headertwo from '@/components/Headertwo'
 import Footer from '@/components/Footer';
 import BottomMenu from '@/components/BottomMenu';
@@ -9,11 +9,14 @@ import useAuth from '@/context/useAuth';
 
 const page = () => {
   const router = useRouter();
-  const {setAuthStatus,authStatus} = useAuth();
-  if (!authStatus) {
-    router.replace("/login");
-    return <></>;
-  }
+  const {authStatus} = useAuth();
+  useEffect(() => {
+    if (!authStatus) {
+      router.replace("/login");
+      return <></>;
+    }
+  }, [])
+  
   return (
     <div>
         <section>
