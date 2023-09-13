@@ -6,6 +6,7 @@ export const SidebarData = [
         path:"#",
         class:"ic-db",
     },
+    
       {
         title:" Users",
         path:"#",

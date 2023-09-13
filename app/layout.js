@@ -18,8 +18,6 @@ export default function RootLayout({ children }) {
   const [loader, setLoader] = useState(true);
   const [authStatus,setAuthStatus] = useState(false);
 
-  
-
   useEffect(() => {
     appwriteService.isLoggedIn()
     .then(setAuthStatus)

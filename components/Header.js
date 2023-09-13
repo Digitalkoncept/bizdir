@@ -26,8 +26,8 @@ const Header = () => {
           setUser(userData)
       }
   })()
-}}, [])
-;
+}}, [authStatus]);
+console.log(user)
 
   return (
     <>

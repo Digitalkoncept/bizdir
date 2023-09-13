@@ -67,8 +67,8 @@ const googleAuth = (e) => {
   try {
     account.createOAuth2Session(
       "google",
-      "https://bizdir.in",
-      "https://bizdir.in/login"
+      `${process.env.NEXT_APP_FRONTEND_URL}`,
+      `${process.env.NEXT_APP_FRONTEND_URL}/login`
     );
   } catch (e) {
     toast.error(`${e.message}`);

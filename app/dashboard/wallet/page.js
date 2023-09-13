@@ -4,7 +4,7 @@ import {v4 as uuidv4} from 'uuid'
 import Headertwo from '@/components/Headertwo'
 import appwriteService,{account,databases} from "@/appwrite/appwrite"
 import {toast} from 'react-toastify'
-import { ID } from 'appwrite';
+import { ID,Query } from 'appwrite';
 import Footer from '@/components/Footer';
 import BottomMenu from '@/components/BottomMenu';
 import Link from 'next/link';
@@ -12,6 +12,7 @@ import {BsWallet2} from 'react-icons/bs'
 
 const page = () => {
   const [showModal,setShowModal] = useState(false);
+  const [currentBalance,setCurrentBalance] = useState(null);
   const [amount, setAmount] = useState(200);
   const [user,setUser] = useState(null);
   console.log(amount);
@@ -20,6 +21,12 @@ const page = () => {
         const userData = await appwriteService.getCurrentUser()
         if (userData) {
             setUser(userData)
+        }
+        const existingBalance = await databases.listDocuments('64faed31a7aff8087750', '65000690d48de42a98f2', [
+          Query.equal('user_id', userData.$id)
+        ]);
+        if(existingBalance){
+          setCurrentBalance(existingBalance);
         }
     })()
   }, [])
@@ -46,6 +53,7 @@ const addRequest = async (e) => {
 };
 
 console.log(user)
+console.log("user current balance",currentBalance)
   return (
     <div>
       <section>
@@ -236,7 +244,7 @@ console.log(user)
                             <div className="lhs">
                               {" "}
                               <span >Account Balance</span>
-                              <h6>500₹</h6>
+                              <h6>{currentBalance?.documents.length > 0? currentBalance.documents[0].current_balance:'0'}</h6>
                               <button onClick={openModal} type="button" class="py-2 mt-[24px] px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 transition-all text-sm dark:focus:ring-gray-900 dark:focus:ring-offset-gray-800">
                            ₹ Deposit Money
                           </button>

@@ -143,6 +143,7 @@ console.log("all transactions",transaction)
                 const dateobj = new Date(item.request_time)
                 const formattedDate = dateobj.toLocaleDateString();
                 const formattedTime = dateobj.toLocaleTimeString();
+                if(item.status === 'pending'){
                 return (<tr>
                   <td>{index +1}</td>
                   <td>{item.transaction_id}</td>
@@ -174,6 +175,7 @@ console.log("all transactions",transaction)
                   </td>
 
                 </tr>)
+              }
               })}
 
             </tbody>

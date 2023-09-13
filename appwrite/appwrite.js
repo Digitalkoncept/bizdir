@@ -54,6 +54,7 @@ export  const databases = new Databases(client);
   
       async getCurrentUser() {
           try {
+           
               return account.get()
           } catch (error) {
               console.log("getcurrentUser error: " + error)

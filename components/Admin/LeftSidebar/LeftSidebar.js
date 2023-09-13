@@ -9,6 +9,18 @@ const LeftSidebar = ({showadMenu}) => {
         path:"#",
         class:"ic-db",
     },
+    {
+        title:"wallet",
+        path:"#",
+        class:"ic-coup",
+        subNav:[
+            {
+                name:"balance approved requests",
+                path:"/admin/approved-balance-requests"
+            },
+          
+        ]
+      },
       {
         title:" Users",
         path:"#",
