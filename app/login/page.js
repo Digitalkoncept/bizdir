@@ -67,8 +67,8 @@ const googleAuth = (e) => {
   try {
     account.createOAuth2Session(
       "google",
-      "http://localhost:3000/",
-      "http://localhost:3000/login"
+      "https://bizdir.in",
+      "https://bizdir.in/login"
     );
   } catch (e) {
     toast.error(`${e.message}`);
