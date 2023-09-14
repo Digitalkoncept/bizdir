@@ -61,7 +61,7 @@ const approvePermission = async (e, item) => {
       });
       await databases.updateDocument('64faed31a7aff8087750', '64faed592ffde69dcab8', item.$id, {
         status: "approved",
-        approve_by: `${employee.name}(${employee.role})`,
+        approve_by: `${employee.name}`,
         employee_id: employee.$id,
         approval_time: now.toISOString(),
       });
@@ -93,22 +93,44 @@ const approvePermission = async (e, item) => {
 
 
 
-const rejectPermission = async (e,item) => {
+const rejectPermission = async (e, item) => {
   e.preventDefault();
-  console.log(item.$id)
+  console.log(item.$id);
   const now = new Date();
-  await databases.updateDocument('64faed31a7aff8087750','64faed592ffde69dcab8', item.$id,{
-    status:"reject",
-    approve_by:`${employee.name}`,
-    employee_id:employee.$id,
-    approval_time:now.toISOString(),
 
-  });
-  toast.success("request rejected successfully");
+  try {
+    let balance = null;
+    
+    // Check if the user exists in the balance table
+    const balanceQuery = Query.equal('user_id', item.user_id);
+    const existingBalance = await databases.listDocuments('64faed31a7aff8087750', '65000690d48de42a98f2', [balanceQuery]);
+    console.log("existingbalance",existingBalance);
+    if (existingBalance.documents.length > 0) {
+      // User exists, update the balance by deducting the amount
+      balance = existingBalance.documents[0];
+      balance.current_balance -= item.balance; // Deduct the amount from the current balance
+      await databases.updateDocument('64faed31a7aff8087750', '65000690d48de42a98f2', balance.$id, {
+        current_balance: balance.current_balance,
+      });
+      await databases.updateDocument('64faed31a7aff8087750', '64faed592ffde69dcab8', item.$id, {
+        status: "rejected by admin",
+      });
+    } else {
+      // This scenario shouldn't occur if the user always has a balance entry
+      console.error("User's balance record not found");
+      return;
+    }
+  } catch (error) {
+    console.error('Error updating balance:', error);
+    return;
+  }
+
+  toast.success("Request rejected successfully");
   setShowModal(null);
   getTransactions();
-  console.log("transaction rejected Successfully");
+  console.log("Transaction updated successfully");
 };
+
 console.log("all transactions",transaction)
 
   return (
@@ -131,18 +153,24 @@ console.log("all transactions",transaction)
                 <th>No</th>
                 <th>transaction_id</th>
                 <th>user_id</th>
-                <th>user_name</th>
+                <th>user</th>
                 <th>balance</th>
                 <th>payment_method</th>
+                <th>approved_by</th>
+                <th>employee_id</th>
                 <th>request_time</th>
+                <th>approval_time</th>
                 <th>status</th>
               </tr>
             </thead>
             <tbody>
               {transaction && transaction.map((item, index) =>{
                 const dateobj = new Date(item.request_time)
+                const dateobj1 = new Date(item.approval_time)
                 const formattedDate = dateobj.toLocaleDateString();
+                const formattedDate1 = dateobj1.toLocaleDateString();
                 const formattedTime = dateobj.toLocaleTimeString();
+                const formattedTime1 = dateobj1.toLocaleTimeString();
                 return (<tr>
                   <td>{index +1}</td>
                   <td>{item.transaction_id}</td>
@@ -150,8 +178,11 @@ console.log("all transactions",transaction)
                   <td> {item.user_name} </td>
                   <td> {item.balance} </td>
                   <td> {item.payment_method} </td>
+                  <td> {item.approve_by} </td>
+                  <td> {item.employee_id} </td>
                   <td> {formattedDate + ' '+ formattedTime} </td>
-                  <td className='relative'>{item.status} <button onClick={() =>openModal(item)} className="db-list-edit" disabled={item.status === 'approved'?'true':false}>update</button>
+                  <td> {formattedDate1 + ' '+ formattedTime1} </td>
+                  <td className='relative'>{item.status} <button onClick={() =>openModal(item)} className="db-list-edit" disabled={item.status === 'rejected by admin'?'true':false}>update</button>
                   {showModal && showModal.$id === item.$id && (
                       <div className="font-manrope flex   items-center justify-center absolute right-0 top-0 z-10">
                       <div className="mx-auto box-border w-[175px] border bg-white p-2">
@@ -164,8 +195,8 @@ console.log("all transactions",transaction)
                           </button>
                         </div>
                         
-                        <div className="my-2 flex justify-between">
-                          <button onClick={(e)=> approvePermission(e,item)} className="w-4/2 cursor-pointer rounded-[4px] bg-green-700 px-3 py-[6px] text-center font-base text-xs text-white">Approve</button>
+                        <div className="my-2 ">
+                         
                           <button onClick={(e)=> rejectPermission(e,item)} className="w-4/2 cursor-pointer rounded-[4px] bg-red-700 px-3 py-[6px] text-center font-base text-xs text-white">Reject</button>
                         </div>
                       </div>

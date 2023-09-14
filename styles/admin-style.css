@@ -1536,12 +1536,26 @@ a:hover {
     border-radius: 2px;
     border: 1px solid #d3d3d3;
     cursor:pointer;
+    &[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    &[disabled]:hover {
+        opacity: 0.5;
+        cursor: not-allowed;
+        color: #595b64;
+        background:transparent;
+        border: 1px solid #d3d3d3;
+
+    }
 }
 .db-list-edit:hover {
     background: #ffa778;
     color: #fff;
     border: 1px solid #f39664;
+   
 }
+
 a.db-list-ststus:hover{color:#fff;    background: #397eba;}
 .db-invo-dwn{
     padding: 6px 10px 6px 35px;
