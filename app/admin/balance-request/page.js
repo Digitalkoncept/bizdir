@@ -75,7 +75,7 @@ const approvePermission = async (e, item) => {
       balance.$id = response.$id;
       await databases.updateDocument('64faed31a7aff8087750', '64faed592ffde69dcab8', item.$id, {
         status: "approved",
-        approve_by: `${employee.name}`,
+        approve_by: `${employee.name}(${employee.role})`,
         employee_id: employee.$id,
         approval_time: now.toISOString(),
       });
