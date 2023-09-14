@@ -6,6 +6,7 @@ import {  toast } from "react-toastify";
 import appwriteService from '@/appwrite/appwrite'
 const page = () => {
   const [showModal,setShowModal] = useState(null);
+  const [rejectReason, setRejectReason] = useState('');
   const [transaction,setTransaction] = useState([]);
   const [currentuser,setCurrentUser] = useState(null);
   const [employee,setEmloyee] = useState(null);
@@ -39,59 +40,6 @@ const closeModal = () =>{
 }
 console.log(employee)
 
-const approvePermission = async (e, item) => {
-  e.preventDefault();
-  console.log(item.$id);
-  const now = new Date();
-  
-
-  try {
-    let balance = null;
-    
-    // Check if the user exists in the balance table
-    const balanceQuery = Query.equal('user_id', item.user_id);
-    const existingBalance = await databases.listDocuments('64faed31a7aff8087750', '65000690d48de42a98f2', [balanceQuery]);
-    console.log("existingbalance",existingBalance);
-    if (existingBalance.documents.length > 0) {
-      // User exists, update the balance
-      balance = existingBalance.documents[0];
-      balance.current_balance += item.balance;
-      await databases.updateDocument('64faed31a7aff8087750', '65000690d48de42a98f2', balance.$id, {
-        current_balance: balance.current_balance,
-      });
-      await databases.updateDocument('64faed31a7aff8087750', '64faed592ffde69dcab8', item.$id, {
-        status: "approved",
-        approve_by: `${employee.name}`,
-        employee_id: employee.$id,
-        approval_time: now.toISOString(),
-      });
-    } else {
-      // User doesn't exist, create a new record
-      balance = {
-        user_id: item.user_id,
-        current_balance: item.balance,
-      };
-      const response = await databases.createDocument('64faed31a7aff8087750', '65000690d48de42a98f2', ID.unique(), balance);
-      balance.$id = response.$id;
-      await databases.updateDocument('64faed31a7aff8087750', '64faed592ffde69dcab8', item.$id, {
-        status: "approved",
-        approve_by: `${employee.name}`,
-        employee_id: employee.$id,
-        approval_time: now.toISOString(),
-      });
-    }
-  } catch (error) {
-    console.error('Error updating or creating balance:', error);
-  }
-
-  toast.success("Request approved successfully");
-  setShowModal(null);
-  getTransactions();
-  console.log("Transaction updated successfully");
-};
-
-
-
 
 const rejectPermission = async (e, item) => {
   e.preventDefault();
@@ -114,6 +62,7 @@ const rejectPermission = async (e, item) => {
       });
       await databases.updateDocument('64faed31a7aff8087750', '64faed592ffde69dcab8', item.$id, {
         status: "rejected by admin",
+        reject_message:rejectReason
       });
     } else {
       // This scenario shouldn't occur if the user always has a balance entry
@@ -128,6 +77,7 @@ const rejectPermission = async (e, item) => {
   toast.success("Request rejected successfully");
   setShowModal(null);
   getTransactions();
+  setRejectReason('');
   console.log("Transaction updated successfully");
 };
 
@@ -185,7 +135,7 @@ console.log("all transactions",transaction)
                   <td className='relative'>{item.status} <button onClick={() =>openModal(item)} className="db-list-edit" disabled={item.status === 'rejected by admin'?'true':false}>update</button>
                   {showModal && showModal.$id === item.$id && (
                       <div className="font-manrope flex   items-center justify-center absolute right-0 top-0 z-10">
-                      <div className="mx-auto box-border w-[175px] border bg-white p-2">
+                      <div className="mx-auto box-border w-[300px] border bg-white p-2">
                         <div className="flex items-center justify-between relative">
                         
                           <button onClick={closeModal} className="cursor-pointer border rounded-[4px] absolute right-0">
@@ -196,8 +146,13 @@ console.log("all transactions",transaction)
                         </div>
                         
                         <div className="my-2 ">
-                         
-                          <button onClick={(e)=> rejectPermission(e,item)} className="w-4/2 cursor-pointer rounded-[4px] bg-red-700 px-3 py-[6px] text-center font-base text-xs text-white">Reject</button>
+                        <form onSubmit={(e)=> rejectPermission(e,item)}>
+                      
+                      <textarea id="message" rows="4"
+                       onChange={(e) => setRejectReason(e.target.value)} 
+                       className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500  " placeholder="give any reason here..."></textarea>
+                          <button type='submit'  className="w-4/2 cursor-pointer rounded-[4px] bg-red-700 px-3 py-[6px] text-center font-base text-xs text-white">Reject</button>
+                          </form>
                         </div>
                       </div>
                     </div>

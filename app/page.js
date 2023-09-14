@@ -6,6 +6,7 @@ import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Slider from "react-slick";
 import {account,databases} from "@/appwrite/appwrite"
+import useAuth from '@/context/useAuth';
 import Header from '@/components/Header'
 import Footer from '@/components/Footer';
 import { useRouter,useSearchParams } from 'next/navigation';
@@ -17,6 +18,8 @@ const page = () => {
   const [location, setLocation] = useState({});
   const [loading, setLoading] = useState(true);
   
+  
+  const {jwtToken} = useAuth();
   const router = useRouter();
 
   var settings = {
@@ -100,7 +103,7 @@ const page = () => {
   }, [userId, secret]);
   
   // const urlParams = new URLSearchParams(window.location.search);
- 
+ console.log("this is jwt token",jwtToken);
 
   
   return (

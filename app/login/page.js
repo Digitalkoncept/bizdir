@@ -22,7 +22,7 @@ const [loginForm, setLoginForm] = useState({
 const [userEmail, setuserEmail] = useState("");
 console.log(userEmail)
     const [error, setError] = useState("")
-    const {setAuthStatus,authStatus} = useAuth();
+    const {setAuthStatus,authStatus,jwtToken,setJwtToken} = useAuth();
   const searchParams = useSearchParams()
     const login = searchParams.get('login')
     console.log("auth status is ",authStatus)
@@ -50,9 +50,12 @@ console.log(userEmail)
     e.preventDefault()
     try {
         const session = await appwriteService.login(loginForm);
+        const jwt = await account.createJWT()
         if (session) {
             setAuthStatus(true)
-            router.push("/dashboard")
+            setJwtToken(jwt.jwt);
+            console.log(jwt)
+            router.push("/")
         }
             
         
@@ -99,10 +102,10 @@ const forgetPassword = async (e) => {
   }
 };
 
-if (authStatus) {
-  router.replace("/dashboard");
-  return <></>;
-}
+// if (authStatus) {
+//   router.replace("/dashboard");
+//   return <></>;
+// }
 
   
   return (

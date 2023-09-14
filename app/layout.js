@@ -17,6 +17,7 @@ import "@/css/style2.css"
 export default function RootLayout({ children }) {
   const [loader, setLoader] = useState(true);
   const [authStatus,setAuthStatus] = useState(false);
+  const [jwtToken, setJwtToken] = useState(null);
 
   useEffect(() => {
     appwriteService.isLoggedIn()
@@ -25,7 +26,7 @@ export default function RootLayout({ children }) {
 
 }, []);
 
-  return ( <AuthProvider  value={{ authStatus, setAuthStatus }}>
+  return ( <AuthProvider  value={{ authStatus, setAuthStatus , jwtToken , setJwtToken }}>
     <html>
       <body> 
         <div>
