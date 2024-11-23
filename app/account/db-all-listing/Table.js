@@ -7,6 +7,8 @@ import { DELETE_LISTING } from "@/lib/mutation";
 import { client } from "@/lib/apollo";
 import { toast } from "react-toastify";
 import { CldImage } from "next-cloudinary";
+import { Tooltip } from 'react-tooltip'
+import 'react-tooltip/dist/react-tooltip.css'
 
 const Table = () => {
   const [listingData, setListingData] = useState([]);
@@ -133,6 +135,7 @@ const Table = () => {
                 
                 {listing.listing_status !== 'Disabled'? (
                 <td
+                data-tooltip-id={listing._id}
                   className={`${
                     listing.listing_status === "Disabled" ? "disabled" : ""
                   } ${
@@ -144,12 +147,12 @@ const Table = () => {
                   } relative`}
                 >
                   {listing?.approval}
-                  <span
-                    className="custom-tooltip"
-                    data-text={`${listing.approval_by?.message}`}
-                  >
-                    {listing.approval_by?.message}
-                  </span>
+                  <Tooltip 
+                  id={listing._id}
+                  place="bottom"
+                  className="!top-6"
+                  content={listing.approval_by?.message}
+                  />
                 </td>
                 ):(
                 <td>
