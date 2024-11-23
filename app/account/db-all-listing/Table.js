@@ -50,7 +50,7 @@ const Table = () => {
     try {
       const { data, errors } = await client.mutate({
         mutation: DELETE_LISTING,
-        variables: { id: id },
+        variables: { id: id, user_id:session.user.id },
         context: {
           headers: {
             Authorization: `Bearer ${session.jwt}`,
