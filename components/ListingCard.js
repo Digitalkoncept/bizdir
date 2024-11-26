@@ -18,7 +18,7 @@ const ListingCard = ({ item, id }) => {
         {/*-LISTING NAME-*/}
         <div>
           <h4>
-            <Link href="/listing-details">{item.listing_name}</Link>
+            <Link href="/all-listing">{item._id}</Link>
             <i className="li-veri">
               <img src="/icon/svg/verified.png" alt="" />
             </i>
@@ -36,9 +36,9 @@ const ListingCard = ({ item, id }) => {
           <div className="links">
             
             <Link href={`/all-listing/${item._id}`}>View more</Link>
-            <Link href="/Tel:7904462944">Call Now</Link>
+            <Link href={`tel:${item.phone_number}`}>Call Now</Link>
             <Link
-              href="https://wa.me/7904462944"
+              href={`https://wa.me/${item.phone_number}`}
               className="what"
               target="_blank"
             >
