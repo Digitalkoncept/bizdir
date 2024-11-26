@@ -62,6 +62,7 @@ const page = ({ params }) => {
   const mapRef = useRef(null);
   const reviewRef = useRef(null);
 
+   console.log("address is ",listing)
   const handleEnquiryFormData = (e) => {
     console.log(e.target.name, e.target.value);
     setEnquiryFormData((prevState) => ({
@@ -75,8 +76,8 @@ const page = ({ params }) => {
 
     const enquiryData = {
       ...enquiryFormData,
-      listing: listing._id,
-      user_id: listing.user._id,
+      listing: listing?._id,
+      user_id: listing?.user._id,
       enquiry_type: "listing",
     };
 
@@ -141,7 +142,7 @@ const page = ({ params }) => {
         return;
       }
       if (session?.user.id === listing?.user) {
-        toast.error("You Already Claimed This Listing.");
+        toast.error("You Already Claimed This listing?.");
         return;
       }
       const { data, errors } = await client.mutate({
@@ -206,20 +207,20 @@ const page = ({ params }) => {
         variables: { id: params.id },
       });
 
-      if (errors || data.getListing.code !== 200) {
+      if (errors || data.getListing?.code !== 200) {
         throw new Error("Something went wrong");
       }
 
-      const currentListing = await data.getListing.listing;
+      const currentListing = await data.getListing?.listing;
 
-      console.log(currentListing);
+      console.log('current listing',data);
       setListing(currentListing);
       setFormData((prevFormData) => ({
         ...prevFormData,
-        listing_id: currentListing._id,
-        listing_name: currentListing.listing_name,
-        listing_image: currentListing.listing_image,
-        listing_date: currentListing.createdAt,
+        listing_id: currentListing?._id,
+        listing_name: currentListing?.listing_name,
+        listing_image: currentListing?.listing_image,
+        listing_date: currentListing?.createdAt,
       }));
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -319,7 +320,7 @@ const page = ({ params }) => {
         </section>
         <section>
           <div className="list-bann">
-            <img src={listing?.cover_image} alt="" />
+            <img src={listing?.cover_image || '/listing-ban/7.jpg'} alt="banner-img" />
           </div>
         </section>
         <section className=" pg-list-1">
@@ -327,7 +328,7 @@ const page = ({ params }) => {
             <div className="row">
               <div className="col-md-12">
                 <div className="pg-list-1-pro">
-                  <img src={listing?.listing_image} alt="" />
+                  <img src={listing?.listing_image || '/listings/1.jpg'} alt="listing-img" />
                   <span className="stat">
                     <i className="material-icons">verified_user</i>
                   </span>
@@ -609,12 +610,14 @@ const page = ({ params }) => {
                       <div className="home-list-pop">
                         {/*LISTINGS IMAGE*/}
                         <div className="col-md-3">
+                          {listing?.offer?.offer_image && (
                           <CldImage
                             width="150"
                             height="172"
                             src={listing?.offer?.offer_image}
                             alt="Description of my image"
                           />
+                          )}
                         </div>
                         {/*LISTINGS: CONTENT*/}
                         <div className="col-md-9 home-list-pop-desc inn-list-pop-desc list-room-deta">
@@ -1273,7 +1276,7 @@ const page = ({ params }) => {
                         <ul>
                           <li>
                             <BusinessTimings
-                              timingData={listing.business_time}
+                              timingData={listing?.business_time}
                             />
                           </li>
                           <li>
@@ -1446,7 +1449,6 @@ const page = ({ params }) => {
                         type="hidden"
                         className="form-control"
                         name="enquiry_sender_id"
-                        defaultValue
                         placeholder=""
                         required
                       />
